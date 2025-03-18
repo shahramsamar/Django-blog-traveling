@@ -1,0 +1,17 @@
+# default installing for run project
+asgiref==3.8.1
+Django==5.1.7
+sqlparse==0.5.3
+tzdata==2025.1
+pillow==11.1.0
+
+
+# for env file
+python-decouple==3.8
+
+
+
+
+# refactoring 
+flake8-django==6.1.0
+black==25.1.0
