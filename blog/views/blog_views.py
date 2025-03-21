@@ -23,6 +23,7 @@ class BlogHomeView(ListView):
         get search item in title and content
         """
         queryset = super().get_queryset()
+        # print(queryset)
         search_term = self.request.GET.get("s")
         if search_term:
             return queryset.filter(Q(title__icontains=search_term) | Q(content__icontains=search_term))
@@ -34,9 +35,12 @@ class BlogHomeView(ListView):
         """
         context = super().get_context_data(**kwargs)
         context['search_term'] = self.request.GET.get('s','')
+        context['latest_post'] = self.get_queryset().order_by('is_published')[:3]
+        # print(context.keys())
+        # print(context['latest_post'])
         return context
     
-
+    
 
 def SingleBlogView(request):
     return render(request,'single.html')
