@@ -12,6 +12,7 @@ class BlogHomeView(ListView):
     template_name = 'blog.html'
     context_object_name = 'posts'
     success_url = '/'
+    paginate_by = 4
     
 # def BlogView(request):
 #     # template_name ='blog.html'
