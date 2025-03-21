@@ -1,0 +1,13 @@
+{% load static %}
+				<!-- Start Search Form -->
+                <div class="sidebar-box pt-md-4">
+                    <form action="{% url "blog" %}" method='get' class="search-form">
+                        <div class="form-group">
+                            {% comment %} <span class="fas fa-search" ></span> {% endcomment %}
+                            <input type="text" class="form-control" name="s" 
+                                placeholder="Type a keyword and hit enter"
+                                value="{{ search }}" >
+                        </div>
+                    </form>
+                </div>
+                <!-- End Search Form -->

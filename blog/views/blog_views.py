@@ -36,15 +36,7 @@ class BlogHomeView(ListView):
         context['search_term'] = self.request.GET.get('s','')
         return context
     
-    # def search(request,self):
-    #     if request.method == "GET":
-    #         if var :=request.GET.get("s"):
-    #             self.posts = self.posts.filter(content__=var)
-    #     return self.posts       
-    
-# def BlogView(request):
-#     # template_name ='blog.html'
-#     return render(request,'blog.html')
+
 
 def SingleBlogView(request):
     return render(request,'single.html')
