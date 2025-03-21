@@ -6,9 +6,9 @@
             <a class="blog-img mr-4"
                 style="background-image: url({{ post.image.url  }});"></a>
             <div class="text">
-                <h3 class="heading"><a href="#">{{post.title}}</a></h3>
+                <h3 class="heading"><a href="{% url 'single' %}">{{post.title}}</a></h3>
                 <div class="meta">
-                    <div><a href="#"><span class="far fa-calendar-alt mr-2"></span> June 28, 2019</a></div>
+                    <div><a href="#"><span class="far fa-calendar-alt mr-2"></span>{{post.created_date | date:'Y-m-d'}}</a></div>
                     <div><a href="#"><span class="fas fa-user mr-2"></span> {{post.author}}</a></div>
                     <div><a href="#"><span class="far fa-comment-dots mr-2"></span> 19</a></div>
                 </div>
