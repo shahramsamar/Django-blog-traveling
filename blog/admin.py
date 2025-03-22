@@ -1,17 +1,21 @@
 from django.contrib import admin
-from blog.models.blog_models import Post,Category
+from blog.models.blog_models import Post, Category
 
 
 class PostAdmin(admin.ModelAdmin):
-    
-    list_display =[
-        'id',
-        'title',
-        'category',
-        'is_published',
-        'created_date',
-        'updated_date',
-    ]
 
-admin.site.register(Post,PostAdmin)
+    list_display = [
+        "id",
+        "title",
+        "is_published",
+        "created_date",
+        "updated_date",
+    ]
+    search_fields = ["title", "content"]
+    list_filter = ("author", "is_published")
+    empty_value_display = "-empty-"
+    date_hierarchy = "created_date"
+
+
+admin.site.register(Post, PostAdmin)
 admin.site.register(Category)

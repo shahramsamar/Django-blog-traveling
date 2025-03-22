@@ -1,6 +1,4 @@
-{% extends 'base.html' %}{% load static %}
-
-{% block content %}
+{% extends 'base.html' %}{% load static %} {% block content %}
 <div id="colorlib-main">
 	<section class="ftco-section ftco-no-pt ftco-no-pb">
 		<div class="container">
@@ -49,6 +47,7 @@
 							est blanditiis alias laborum sint dolore. Dolores, iure, reprehenderit. Error provident,
 							pariatur cupiditate soluta doloremque aut ratione. Harum voluptates mollitia illo minus
 							praesentium, rerum ipsa debitis, inventore?</p>
+
 						<div class="tag-widget post-tag-container mb-5 mt-5">
 							<div class="tagcloud">
 								<a href="#" class="tag-cloud-link">Life</a>
@@ -210,66 +209,20 @@
 				<div class="col-lg-4 sidebar ftco-animate bg-light pt-5">
 
 					<!-- Start Search Form -->
-					{% include "search.html" %}
+						{% include "search.html" %}
 					<!-- End Search Form -->
 
 					<!-- Start Categories -->
-					{% include 'Categories.html'%}
+						{% include 'Categories.html'%}
 					<!-- End Categories -->
+					
+					<!-- Start Popular Articles -->
+						{% include "popular_articles.html" %}
+					<!-- End Popular Articles -->
 
-					<div class="sidebar-box ftco-animate">
-						<h3 class="sidebar-heading">Popular Articles</h3>
-						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4"
-								style="background-image: url({% static 'images/image_1.jpg' %});"></a>
-							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control</a></h3>
-								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> June 28, 2019</a></div>
-									<div><a href="#"><span class="icon-person"></span> Dave Lewis</a></div>
-									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-								</div>
-							</div>
-						</div>
-						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4"
-								style="background-image: url({% static 'images/image_2.jpg' %});"></a>
-							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control</a></h3>
-								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> June 28, 2019</a></div>
-									<div><a href="#"><span class="icon-person"></span> Dave Lewis</a></div>
-									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-								</div>
-							</div>
-						</div>
-						<div class="block-21 mb-4 d-flex">
-							<a class="blog-img mr-4"
-								style="background-image: url({% static 'images/image_3.jpg' %});"></a>
-							<div class="text">
-								<h3 class="heading"><a href="#">Even the all-powerful Pointing has no control</a></h3>
-								<div class="meta">
-									<div><a href="#"><span class="icon-calendar"></span> June 28, 2019</a></div>
-									<div><a href="#"><span class="icon-person"></span> Dave Lewis</a></div>
-									<div><a href="#"><span class="icon-chat"></span> 19</a></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="sidebar-box ftco-animate">
-						<h3 class="sidebar-heading">Tag Cloud</h3>
-						<ul class="tagcloud">
-							<a href="#" class="tag-cloud-link">animals</a>
-							<a href="#" class="tag-cloud-link">human</a>
-							<a href="#" class="tag-cloud-link">people</a>
-							<a href="#" class="tag-cloud-link">cat</a>
-							<a href="#" class="tag-cloud-link">dog</a>
-							<a href="#" class="tag-cloud-link">nature</a>
-							<a href="#" class="tag-cloud-link">leaves</a>
-							<a href="#" class="tag-cloud-link">food</a>
-						</ul>
-					</div>
+					<!-- Start tags -->
+						{% include "tags.html" %}
+					<!-- End tags-->
 
 					<div class="sidebar-box subs-wrap img"
 						style="background-image: url({% static 'images/bg_1.jpg' %});">
@@ -302,9 +255,11 @@
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem
 							necessitatibus voluptate quod mollitia delectus aut.</p>
 					</div>
-				</div><!-- END COL -->
+				</div>
+				<!-- END COL -->
 			</div>
 		</div>
 	</section>
-</div><!-- END COLORLIB-MAIN -->
+</div>
+<!-- END COLORLIB-MAIN -->
 {% endblock content %}
