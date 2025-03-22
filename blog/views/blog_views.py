@@ -9,6 +9,9 @@ from django.views.generic import (
 from blog.models.blog_models import Post, Category, TaggableManager
 from django.db.models import Q, Count
 from taggit.models import Tag
+from blog.forms.form import NewsLetterForm
+from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 class BlogHomeView(ListView):
@@ -25,7 +28,7 @@ class BlogHomeView(ListView):
         """
         get search item in title and content
         """
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(is_published=True)
 
         search_term = self.request.GET.get("s")
         # print(search_term)
@@ -49,6 +52,22 @@ class BlogHomeView(ListView):
 
         return queryset
 
+
+    def post(self, request, *args, **kwargs):
+        """
+            Handle newsletter subscription form submission
+        """
+        form = NewsLetterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thank you for subscribing to our newsletter!")
+        else:
+            messages.error(request, "Invalid email address. Please try again.")
+            
+        return HttpResponseRedirect('/')
+        
+
+
     def get_context_data(self, **kwargs):
         """
         set context with queryset  and  return
@@ -63,10 +82,12 @@ class BlogHomeView(ListView):
             .filter(post_count__gt=0)
         )
         context["all_tags"] = Post.tags.all()
+        context['newsletter_form'] = NewsLetterForm()
 
         return context
 
 
+        
 class SingleBlogView(BlogHomeView):
     model = Post
     template_name = "single.html"
