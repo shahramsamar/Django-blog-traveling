@@ -13,9 +13,6 @@ urlpatterns = [
     
     path("newsletter/", blog_views.BlogHomeView.as_view(), name='newsletter'),
     path("archive/<int:year>/<int:month>/",blog_views.MonthlyArchiveView.as_view(month_format='%m'),name='post_archive'),
-    # path('archive/<int:year>/<int:month>/',
-    #      blog_views.PostMonthArchiveView.as_view(),
-    #      name='post_archive_view'),
-    
-    path("single/", blog_views.SingleBlogView.as_view(), name='single'),
+
+    path("post/<int:pk>/", blog_views.SingleBlogView.as_view(), name='single'),
 ]
