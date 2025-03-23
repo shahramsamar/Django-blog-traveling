@@ -17,7 +17,9 @@
 									<div class="meta-wrap">
 										<p class="meta">
 											<span><i class="far fa-calendar-alt mr-2"></i>{{post.created_date|date:'Y-m-d'}}</span>
-											<span><i class="far fa-folder mr-2"></i>Travel</span>
+											{% for cat in post.category.all %}
+											<span><i class="far fa-folder mr-2"></i>{{ cat.name}}   </span>
+											{% endfor %}
 											<span><i class="far fa-comment-dots mr-2"></i>5 Comment</span>
 										</p>
 									</div>
