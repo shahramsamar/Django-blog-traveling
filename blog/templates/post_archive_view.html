@@ -10,10 +10,10 @@
                         <div class="row pt-md-4">
                             <div class="col-md-12">
                                 <div class="blog-entry ftco-animate d-md-flex">
-                                    <a href="{% url 'single' %}" class="img img-2"
+                                    <a href="{% url 'single' post.pk  %}" class="img img-2"
                                         style="background-image: url({{post.image.url}});"></a>
                                     <div class="text text-2 pl-md-4">
-                                        <h3 class="mb-2"><a href="{% url 'single' %}">{{ post.title }}</a></h3>
+                                        <h3 class="mb-2"><a href="{% url 'single' post.pk  %}">{{ post.title }}</a></h3>
                                         <div class="meta-wrap">
                                             <p class="meta">
                                                 <span><i class="far fa-calendar-alt mr-2"></i>{{post.created_date|date:'Y-m-d'}}</span>
@@ -24,7 +24,7 @@
                                             </p>
                                         </div>
                                         <p class="mb-4">{{post.get_snipper}}</p>
-                                        <p><a href="{% url 'single' %}" class="btn-custom">Read More... <span
+                                        <p><a href="{% url 'single' post.pk %}" class="btn-custom">Read More... <span
                                                     class="ion-ios-arrow-forward"></span></a></p>
                                     </div>
                                 </div>

@@ -18,7 +18,7 @@ class Post(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="imgage/post", default="default/")
-    category = models.ManyToManyField(Category, blank=True)
+    category = models.ManyToManyField(Category, blank=True, related_name='posts')
     tags = TaggableManager(blank=True)
     title = models.CharField(max_length=100)
     content = models.TextField()
@@ -29,13 +29,12 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    def get_snipper(self):
+    def get_snippet(self):
         return self.content[0:150]
 
-    # def get_absolute_url(self):
-    #     return reverse("single", kwargs={"pk": self.pk})
-    # def get_absolute_url(self):
-    #     return reverse('blog', args=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse("single", kwargs={"pk": self.pk})
+
 
 class NewsLetter(models.Model):
     email = models.EmailField()
