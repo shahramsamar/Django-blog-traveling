@@ -12,6 +12,9 @@ from taggit.models import Tag
 from blog.forms.form import NewsLetterForm
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models.functions import TruncMonth
+from django.views.generic.dates import MonthArchiveView
+
 
 
 class BlogHomeView(ListView):
@@ -83,8 +86,40 @@ class BlogHomeView(ListView):
         )
         context["all_tags"] = Post.tags.all()
         context['newsletter_form'] = NewsLetterForm()
-
+        context['archives'] = Post.objects.annotate(date=TruncMonth('created_date')).values('date').annotate(count=Count('id')).order_by('date')
+        # print(context['archives'])
         return context
+
+
+class MonthlyArchiveView(MonthArchiveView):
+    model = Post
+    allow_future = False
+    context_object_name = 'posts'
+    template_name = 'post_archive_view.html'
+    month_format = '%m'
+    date_field = 'created_date'
+    paginate_by = 5 # Optional pagination
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(created_date__year=self.get_year(), created_date__month=self.get_month())
+    
+
+
+# class PostMonthArchiveView(MonthArchiveView):
+    
+#     model = Post
+#     date_field = 'created_date'  # Your date field name
+#     month_format = '%m'  # Use number format for month
+#     template_name = 'post_archive_view.html'
+#     context_object_name = 'posts'
+#     allow_future = True  # Set to False if you don't want future posts
+#     paginate_by = 10  # Optional pagination
+
+#     # For additional context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['archive_date'] = f"{self.get_year()}-{self.get_month()}"
+#         return context
 
 
         

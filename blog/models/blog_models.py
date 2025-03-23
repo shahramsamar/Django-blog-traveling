@@ -34,7 +34,8 @@ class Post(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse("single", kwargs={"pk": self.pk})
-
+    # def get_absolute_url(self):
+    #     return reverse('blog', args=[str(self.id)])
 
 class NewsLetter(models.Model):
     email = models.EmailField()
