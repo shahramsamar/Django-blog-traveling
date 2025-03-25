@@ -11,7 +11,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
-    image = models.ImageField(upload_to='',default='user.jpeg')
+    image = models.ImageField(upload_to='profile/user',default='profile/profile.jpeg')
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
     subject = models.CharField(max_length=255)

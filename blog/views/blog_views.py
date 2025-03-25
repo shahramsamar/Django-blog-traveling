@@ -34,7 +34,8 @@ class BlogHomeView(ListView):
         """
         get search item in title and content
         """
-        queryset = super().get_queryset().filter(is_published=True)
+        queryset = super().get_queryset().filter(is_published=True).annotate(comment_count=Count('comments',
+                                                                                                 filter=Q(comments__approved=True)))
 
         search_term = self.request.GET.get("s")
         if search_term:
@@ -108,24 +109,18 @@ class SingleBlogView(DetailView):
     template_name = "single.html"
     context_object_name = "post"
     pk_url_kwarg = 'pk'
-    # allow_future = True
 
-    # def post(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     # print(object)
-    #     form = CommentForm(request.POST)
-        
-    #     if form.is_valid():
-    #         comment = form.save(commit=False)
-    #         # print(comment)
-    #         comment.post = self.object
-    #         # print(comment)
-    #         comment.save()
-    #         messages.success(request, "Your comment is awaiting moderation!")
-    #         return redirect(self.object.get_absolute_url())  # Changed from HttpResponseRedirect
-        
-    #     messages.error(request, "Please correct the errors below.")
-    #     return self.render_to_response(self.get_context_data(form=form))
+    def get_queryset(self):
+        """
+        return comment and comment_count
+        """
+        queryset = super().get_queryset().filter(is_published=True).annotate(comment_count=Count('comments',
+                                                                                                 filter=Q(comments__approved=True)))
+        return queryset
+    
+    
+    
+    
 
     def post(self, request, *args, **kwargs):
         """Handle comment form submission"""
@@ -158,9 +153,8 @@ class SingleBlogView(DetailView):
         context["all_tags"] = Post.tags.all()
         context['newsletter_form'] = NewsLetterForm()
         context['archives'] = Post.objects.annotate(date=TruncMonth('created_date')).values('date').annotate(count=Count('id')).order_by('date')
-        # context['comments'] = self.object.comments.filter(approved=True)
-        # print(context['comments'])
+        context['comments'] = self.object.comments.filter(approved=True)
+        # print(context['comments']['author'])
         context['comment_form'] = CommentForm()
-        # print(context['comment_form'])
         return context
 # context['archives'] = Post.objects.annotate(date=TruncMonth('created_date')).values('date').annotate(count=Count('id')).order_by('date')

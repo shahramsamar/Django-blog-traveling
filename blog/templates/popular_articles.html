@@ -10,7 +10,7 @@
                 <div class="meta">
                     <div><a href="#"><span class="far fa-calendar-alt mr-2"></span>{{post.created_date | date:'Y-m-d'}}</a></div>
                     <div><a href="#"><span class="fas fa-user mr-2"></span> {{post.author}}</a></div>
-                    <div><a href="#"><span class="far fa-comment-dots mr-2"></span> 19</a></div>
+                    <div><a href="#"><span class="far fa-comment-dots mr-2"></span> {{ post.comment_count }} comment{{ post.comment_count|pluralize }}</a></div>
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@ class Post(models.Model):
     """ """
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="imgage/post", default="default/")
+    image = models.ImageField(upload_to="imgage/post", default="post/post-images.png")
     category = models.ManyToManyField(Category, blank=True, related_name='posts')
     tags = TaggableManager(blank=True)
     title = models.CharField(max_length=100)
