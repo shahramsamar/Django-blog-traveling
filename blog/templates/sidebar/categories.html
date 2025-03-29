@@ -3,7 +3,7 @@
     <h3 class="sidebar-heading">Categories</h3>
     <ul class="categories">
         {% for category in categories %}
-            <li><a href="{% url 'blog_category' category=category.category__name %}">{{ category.category__name}}  <span>({{ category.post_count }})</span></a></li>
+            <li><a href="{% url 'category-view' category=category.category__name %}">{{ category.category__name}}  <span>({{ category.post_count }})</span></a></li>
         {% endfor %}
     </ul>
 </div>

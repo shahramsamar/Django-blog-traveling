@@ -3,7 +3,7 @@
     <h3 class="sidebar-heading">Archives</h3>
     <ul class="categories">
         {% for archive in archives %}
-        <li><a href="{% url 'post_archive' year=archive.date.year month=archive.date.month  %}">{{archive.date | date:'F Y'}}<span>({{archive.count}})</span></a></li>
+        <li><a href="{% url 'archive-view' year=archive.date.year month=archive.date.month  %}">{{archive.date | date:'F Y'}}<span>({{archive.count}})</span></a></li>
         {% endfor %}
     </ul> 
 
