@@ -10,10 +10,10 @@
             <div class="row d-flex">
                 <div class="col-lg-8 px-md-5 py-5">
                     <div class="row pt-md-4">
-                        <h3 class="mb-3">{{ posts.title }}</h3>
+                        <h3 class="mb-3">{{ post.title }}</h3>
                         <p>{{ post.content }}</p>
                         <p>
-                            <img src="{{ posts.image.url }}" alt="" class="img-fluid">
+                            <img src="{{ post.image.url }}" alt="" class="img-fluid">
                         </p>
                         <div class="tag-widget post-tag-container mb-5 mt-5">
                             <div class="tagcloud">
@@ -24,59 +24,89 @@
                         </div>
                     </div>
                     <div class="pt-5 mt-5">
-                        <h3 class="mb-5 font-weight-bold">{{ posts.comment_count }} comment{{posts.comment_count|pluralize }}</h3>
+                        <h3 class="mb-5 font-weight-bold">
+                            {{ post.comment_count }} comment{{ post.comment_count|pluralize }}
+                        </h3>
+                    
                         {% if comments %}
-                        {% for comment in comments %}
-                        <ul class="comment-list">
-                            <li class="comment">
-                                <div class="comment-body">
-                                    {% if comment.author %}
-                                     <h3>{{ comment.author}}</h3>
-                                    {% else %}
-                                     <h3>anonymous</h3>
-                                    {% endif %}
-                                    <div class="meta">{{comment.created_date|date:'Y-m-d'}}</div>
-                                    <p>{{comment.content}}</p>
-                                    <!-- <p><a href="#" class="reply">Reply</a></p> -->
-                                    <button class="reply-btn btn btn-sm btn-outline-primary" data-comment-id="{{ comment.id }}">Reply </button>
-                                    
-                                </div>
-                            </li>
-                        </ul>   
-                        {% endfor %}
+                            <ul class="comment-list">
+                                {% for comment in comments %}
+                                    <li class="comment">
+                                        <div class="comment-body">
+                                            {% if comment.author %}
+                                                <h3>{{ comment.author }}</h3>
+                                            {% else %}
+                                                <h3>Anonymous</h3>
+                                            {% endif %}
+                    
+                                            <div class="meta">{{ comment.created_date|date:'Y-m-d' }}</div>
+                                            <p>{{ comment.content }}</p>
+                    
+                                            <!-- Reply Button (Adds Parent ID to URL) -->
+                                            <p>
+                                                <a href="{% url 'single' post.pk %}?parent={{ comment.id }}" class="btn btn-sm btn-secondary">
+                                                    Reply
+                                                </a>
+                                            </p>
+                                        </div>
+                    
+                                        <!-- Display Replies -->
+                                        {% if comment.replies.all %}
+                                            <ul class="children">
+                                                {% for reply in comment.replies.all %}
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            {% if reply.author %}
+                                                                <h3>{{ reply.author }}</h3>
+                                                            {% else %}
+                                                                <h3>Anonymous</h3>
+                                                            {% endif %}
+                    
+                                                            <div class="meta">{{ reply.created_date|date:'Y-m-d' }}</div>
+                                                            <p>{{ reply.content }}</p>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         {% else %}
-                            <strong class="text-secondary">No comments yet...</strong>
+                            <h3><strong class="text-secondary">No comments yet...</strong></h3>
                         {% endif %}
-                        <!-- END comment-list -->
-
+                    
+                        <!-- Comment Form (For New Comments & Replies) -->
                         <div class="comment-form-wrap pt-5">
-                            <h3 class="mb-5">Leave a comment</h3>
-                            <form method="post" action="{% url 'add-comment' posts.pk %}">
+                            <h3 class="mb-5">
+                                {% if request.GET.parent %}
+                                    Reply to Comment #{{ request.GET.parent }}
+                                    <a href="{% url 'single' post.pk %}" class="btn btn-danger btn-sm">Cancel</a>
+                                {% else %}
+                                    Leave a comment
+                                {% endif %}
+                            </h3>
+                    
+                            <form method="post" action="{% url 'add-comment' post.pk %}">
                                 {% csrf_token %}
-                                <div class="form-group">
-                                    <label>Message</label>
-                                    <!-- تغییر نام فیلد به content -->
-                                    <textarea 
-                                        name="content" 
-                                        cols="10" 
-                                        rows="3" 
-                                        class="form-control"
-                                        required
-                                    ></textarea>
-                                </div>
-                                
-                                <!-- فیلد مخفی برای ریپلای -->
-                                <input type="hidden" name="parent" value="">
-                                
-                                <!-- استفاده از دکمه سابمیت واقعی -->
+                                {{ comment_form.as_p }}
+                    
+                                <!-- Hidden input for parent comment -->
+                                <input type="hidden" name="parent" value="{{ request.GET.parent|default:'' }}">
+                    
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary">
-                                        New Comment
+                                        {% if request.GET.parent %}
+                                            Submit Reply
+                                        {% else %}
+                                            New Comment
+                                        {% endif %}
                                     </button>
                                 </div>
                             </form>
-                        </div> <!-- END-->
-                    </div>  
+                        </div>
+                    </div>
+                    
                 </div>
                 {% include "dynamic.html" %}
             </div>
