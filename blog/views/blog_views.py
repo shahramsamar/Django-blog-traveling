@@ -34,8 +34,8 @@ class BlogHomeView(ListView):
         """
         get search item in title and content
         """
-        queryset = super().get_queryset().filter(is_published=True).annotate(comment_count=Count('comments',
-                                                                                                 filter=Q(comments__approved=True)))
+        queryset = super().get_queryset().filter(is_published=True).annotate(comment_count=Count('comments',filter=Q(comments__approved=True)))
+        
         search_term = self.request.GET.get("s")
         if search_term:
             return queryset.filter(
@@ -103,14 +103,13 @@ class MonthlyArchiveView(MonthArchiveView):
             created_date__month=self.get_month())\
             .annotate(comment_count=Count('comments',
              filter=Q(comments__approved=True)))
-     
         return queryset
 
         
 class SingleBlogView(DetailView):
     model = Post
     template_name = "single.html"
-    context_object_name = "post"
+    context_object_name = "posts"
     pk_url_kwarg = 'pk'
 
     def get_queryset(self):
@@ -150,7 +149,7 @@ class SingleBlogView(DetailView):
         """Add additional context"""
         context = super().get_context_data(**kwargs)
         context["search_term"] = self.request.GET.get("s", "")
-        context["latest_post"] = Post.objects.filter(is_published=True).order_by("-created_date")[:3]
+        context["latest_post"] = self.get_queryset().order_by("-created_date")[:3]
         context["categories"] = (
             Post.objects.values("category__name")
             .annotate(post_count=Count("id"))

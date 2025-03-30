@@ -10,10 +10,10 @@
             <div class="row d-flex">
                 <div class="col-lg-8 px-md-5 py-5">
                     <div class="row pt-md-4">
-                        <h3 class="mb-3">{{ post.title }}</h3>
+                        <h3 class="mb-3">{{ posts.title }}</h3>
                         <p>{{ post.content }}</p>
                         <p>
-                            <img src="{{ post.image.url }}" alt="" class="img-fluid">
+                            <img src="{{ posts.image.url }}" alt="" class="img-fluid">
                         </p>
                         <div class="tag-widget post-tag-container mb-5 mt-5">
                             <div class="tagcloud">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="pt-5 mt-5">
-                        <h3 class="mb-5 font-weight-bold">{{ post.comment_count }} comment{{post.comment_count|pluralize }}</h3>
+                        <h3 class="mb-5 font-weight-bold">{{ posts.comment_count }} comment{{posts.comment_count|pluralize }}</h3>
                         {% if comments %}
                         {% for comment in comments %}
                         <ul class="comment-list">
@@ -51,7 +51,7 @@
 
                         <div class="comment-form-wrap pt-5">
                             <h3 class="mb-5">Leave a comment</h3>
-                            <form method="post" action="{% url 'add-comment' post.pk %}">
+                            <form method="post" action="{% url 'add-comment' posts.pk %}">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label>Message</label>
