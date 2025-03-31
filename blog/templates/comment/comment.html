@@ -1,0 +1,27 @@
+{% extends 'base.html' %}{% load static %} {% block content %}
+<div id="colorlib-main">
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-8 px-md-5 py-5">
+                    <div class="comment-form-wrap pt-5">
+                        <h3 class="mb-5">Leave a comment</h3>
+                        <form method='post' action="{% url 'comment-view' post.pk  %}" class="p-3 p-md-5 bg-light">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                <label>Message</label>
+                                <textarea cols="10" rows="3" class="form-control" name="message"></textarea>
+                            </div>
+                          
+                                <button type="submit">Add Comment</button>                            
+                        </form>
+                    </div> <!-- END-->
+                </div>
+                <!-- Start dynamic html -->
+                {% include "dynamic.html" %}
+                <!-- End dynamic html -->
+            </div>
+        </div>
+    </section>
+</div><!-- END COLORLIB-MAIN -->
+{% endblock content %}

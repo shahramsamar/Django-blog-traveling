@@ -1,0 +1,9 @@
+{% load static %}
+<div class="sidebar-box ftco-animate">
+    <h3 class="sidebar-heading">Tag Cloud</h3>
+    <ul class="tagcloud">
+        {% for tag in all_tags %}
+            <a href="{% url 'tag-view' tag=tag.name %}" class="tag-cloud-link">{{tag.name}}</a>
+        {% endfor %}
+    </ul>
+</div>

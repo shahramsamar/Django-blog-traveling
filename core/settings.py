@@ -27,15 +27,13 @@ SECRET_KEY = config("SECRET_KEY", default="test")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config("DEBUG", cast=bool)
-DEBUG=True
+DEBUG = True
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
     cast=lambda v: [s.strip() for s in v.split(",")],
     default="localhost,127.0.0.1,*",
 )
-
-
 
 
 # Application definition
@@ -48,10 +46,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # app
-    'blog',
-    'comment',
-    'accounts',
-    
+    "blog",
+    "comment",
+    "accounts",
+    # third party
+    "taggit",
 ]
 
 MIDDLEWARE = [
@@ -130,7 +129,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles" 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",

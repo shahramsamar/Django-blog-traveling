@@ -1,0 +1,18 @@
+{% load static %}
+<div class="comment" style="margin-left: {% if comment.parent %}20px{% else %}0{% endif %};">
+    <p>{{ comment.get_author_name }} - {{ comment.created_date }}</p>
+    <p>{{ comment.message }}</p>
+    
+    <!-- Reply form -->
+    <form method="post" action=".">
+        {% csrf_token %}
+        <input type="hidden" name="parent" value="{{ comment.id }}">
+        {{ comment_form.as_p }}
+        <button type="submit">Reply</button>
+    </form>
+    
+    <!-- Render replies recursively -->
+    {% for reply in comment.replies.all %}
+        {% include "comment.html" with comment=reply %}
+    {% endfor %}
+</div>
