@@ -8,7 +8,7 @@ from django.views.generic import (
     DeleteView,
 )
 from blog.models.blog_models import Post, Category, TaggableManager
-from django.db.models import Q, Count
+from django.db.models import Q, Count,F
 from taggit.models import Tag
 from blog.forms.newsletter import NewsLetterForm
 from django.contrib import messages
@@ -18,6 +18,10 @@ from django.views.generic.dates import MonthArchiveView
 from comment.models.comment_models import Comment
 from comment.forms.comment import CommentForm
 from django.db.models import Prefetch
+from django.contrib import messages
+
+
+
 
 class BlogHomeView(ListView):
     """ 
@@ -29,19 +33,17 @@ class BlogHomeView(ListView):
     success_url = "/"
     paginate_by = 4
     ordering = ["-created_date"]
-
+   
     def get_queryset(self):
         """
         get search item in title and content
         """
         queryset = super().get_queryset().filter(is_published=True).annotate(comment_count=Count('comments',filter=Q(comments__approved=True)))
-        
         search_term = self.request.GET.get("s")
         if search_term:
             return queryset.filter(
                 Q(title__icontains=search_term) | Q(content__icontains=search_term)
             )
-
         category = self.kwargs.get("category")
         if category:
             return queryset.filter(category__name__iexact=category)
@@ -49,10 +51,10 @@ class BlogHomeView(ListView):
         tag_name = self.kwargs.get("tag")
         if tag_name:
             return queryset.filter(tags__name__iexact=tag_name)
-
         return queryset
 
 
+    
     def post(self, request, *args, **kwargs):
         """
             Handle newsletter subscription form submission
@@ -63,7 +65,6 @@ class BlogHomeView(ListView):
             messages.success(request, "Thank you for subscribing to our newsletter!")
         else:
             messages.error(request, "Invalid email address. Please try again.")
-            
         return HttpResponseRedirect('/')
         
 
@@ -72,7 +73,7 @@ class BlogHomeView(ListView):
         """
         set context with queryset  and  return
         """
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)            
         context["search_term"] = self.request.GET.get("s", "")
         context["latest_post"] = self.get_queryset().order_by("-created_date")[:3]
         context["categories"] = (
@@ -144,8 +145,17 @@ class SingleBlogView(DetailView):
     def get_context_data(self, **kwargs):
         """Add additional context"""
         context = super().get_context_data(**kwargs)
+        if "pk" in self.kwargs:
+            post = get_object_or_404(Post, pk=self.kwargs["pk"])
+            post.views += 1  # Manually increment
+            post.save(update_fields=["views"])  # Save changes
+            # print(f"Updated views count: {post.views}")  # Debugging
+            # print(self.request) # Show result
+        
+        
+        
         context["search_term"] = self.request.GET.get("s", "")
-        context["latest_post"] = Post.objects.filter(is_published=True).order_by("-created_date")[:3]
+        context["latest_post"] = self.get_queryset().order_by("-created_date")[:3]
         context["categories"] = (
             Post.objects.values("category__name")
             .annotate(post_count=Count("id"))
@@ -163,100 +173,6 @@ class SingleBlogView(DetailView):
    
    
    
-   
-# from django.contrib import messages
-
-# class PostCommentView(CreateView):
-#     model = Comment
-#     form_class = CommentForm
-#     template_name = "single.html"
-
-#     def form_valid(self, form):
-#         form.instance.author = self.request.user
-#         form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
-        
-#         # Remove parent from cleaned_data so it doesn't get assigned automatically
-#         parent_id = form.cleaned_data.pop('parent', None)
-#         if parent_id:
-#             try:
-#                 # Retrieve the Comment instance for the given parent ID
-#                 parent_comment = Comment.objects.get(id=parent_id)
-#                 form.instance.parent = parent_comment
-#             except Comment.DoesNotExist:
-#                 form.instance.parent = None
-        
-#         messages.success(self.request, "Your comment has been submitted for moderation!")
-#         return super().form_valid(form)
-
-#     def form_invalid(self, form):
-#         messages.error(self.request, "Please correct the errors in the form.")
-#         return super().form_invalid(form)
-
-#     def get_success_url(self):
-#         return reverse('single', kwargs={'pk': self.kwargs['pk']}) + "#comments"
-from django.contrib import messages
-
-
-# class PostCommentView(CreateView):
-#     model = Comment
-#     form_class = CommentForm
-#     template_name = "single.html"
-
-#     def form_valid(self, form):
-#         instance = form.save(commit=False)
-#         instance.author = self.request.user
-#         instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
-        
-#         # Retrieve the 'parent' value from cleaned_data
-#         parent_id = form.cleaned_data.get('parent')
-#         if parent_id:
-#             try:
-#                 # Convert the ID into a Comment instance
-#                 parent_comment = Comment.objects.get(id=parent_id)
-#                 instance.parent = parent_comment
-#             except Comment.DoesNotExist:
-#                 # If not found, do not assign a parent
-#                 instance.parent = None
-#         else:
-#             instance.parent = None
-
-#         instance.save()
-#         messages.success(self.request, "Your comment has been submitted for moderation!")
-#         return redirect(reverse('single', kwargs={'pk': self.kwargs['pk']}) + "#comments")
-
-#     def form_invalid(self, form):
-#         messages.error(self.request, "Please correct the errors in the form.")
-#         return super().form_invalid(form)
-# class PostCommentView(CreateView):
-#     model = Comment
-#     form_class = CommentForm
-#     template_name = "single.html"
-
-#     def form_valid(self, form):
-#         instance = form.save(commit=False)
-#         instance.author = self.request.user
-#         instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
-        
-#         # Get the parent value from POST data
-#         parent_value = self.request.POST.get('parent', '')
-#         if parent_value:
-#             try:
-#                 parent_id = int(parent_value)
-#                 parent_comment = Comment.objects.get(pk=parent_id)
-#                 instance.parent = parent_comment
-#             except (ValueError, Comment.DoesNotExist):
-#                 # If conversion fails or comment not found, set parent to None
-#                 instance.parent = None
-#         else:
-#             instance.parent = None  # For top-level comments
-        
-#         instance.save()
-#         messages.success(self.request, "Your comment has been submitted for moderation!")
-#         return redirect(reverse('single', kwargs={'pk': self.kwargs['pk']}) + "#comments")
-
-#     def form_invalid(self, form):
-#         messages.error(self.request, "Please correct the errors in the form.")
-#         return super().form_invalid(form)
 class PostCommentView(CreateView):
     model = Comment
     form_class = CommentForm

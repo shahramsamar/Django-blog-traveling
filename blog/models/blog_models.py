@@ -22,6 +22,7 @@ class Post(models.Model):
     tags = TaggableManager(blank=True)
     title = models.CharField(max_length=100)
     content = models.TextField()
+    views = models.IntegerField(default=False)
     is_published = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

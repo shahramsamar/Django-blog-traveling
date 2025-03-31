@@ -23,6 +23,8 @@
 											{% endfor %}
 										
 											<span><i class="far fa-comment-dots mr-2"></i>{{ post.comment_count }} comment{{ post.comment_count|pluralize }}</span>
+											&#128065; {{ post.views }}  <!-- 👁 -->
+
 										</p>
 									</div>
 									<p class="mb-4">{{post.get_snippet}}</p>

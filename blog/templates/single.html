@@ -22,13 +22,15 @@
                                 {% endfor %}
                             </div>
                         </div>
+                       
                     </div>
                     <div class="pt-5 mt-5">
+                       
+                        {% if comments %}
                         <h3 class="mb-5 font-weight-bold">
                             {{ post.comment_count }} comment{{ post.comment_count|pluralize }}
                         </h3>
                     
-                        {% if comments %}
                             <ul class="comment-list">
                                 {% for comment in comments %}
                                     <li class="comment">
@@ -44,7 +46,7 @@
                     
                                             <!-- Reply Button (Adds Parent ID to URL) -->
                                             <p>
-                                                <a href="{% url 'single' post.pk %}?parent={{ comment.id }}" class="btn btn-sm btn-secondary">
+                                                <a href="{% url 'single' post.pk %}?parent={{ comment.id }}"  class="btn btn-primary" >
                                                     Reply
                                                 </a>
                                             </p>
@@ -57,13 +59,13 @@
                                                     <li class="comment">
                                                         <div class="comment-body">
                                                             {% if reply.author %}
-                                                                <h3>{{ reply.author }}</h3>
+                                                                <h6>{{ reply.author }}</h6>
                                                             {% else %}
-                                                                <h3>Anonymous</h3>
+                                                                <h6>Anonymous</h6>
                                                             {% endif %}
                     
                                                             <div class="meta">{{ reply.created_date|date:'Y-m-d' }}</div>
-                                                            <p>{{ reply.content }}</p>
+                                                            <h6><p>{{ reply.content }}</p></h6>
                                                         </div>
                                                     </li>
                                                 {% endfor %}
@@ -102,6 +104,7 @@
                                             New Comment
                                         {% endif %}
                                     </button>
+                                    <a  href="/" class="btn btn-primary">Home</a>
                                 </div>
                             </form>
                         </div>
