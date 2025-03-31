@@ -19,6 +19,7 @@ from comment.models.comment_models import Comment
 from comment.forms.comment import CommentForm
 from django.db.models import Prefetch
 from django.contrib import messages
+from accounts.models.users_models import User
 
 
 class BlogHomeView(ListView):

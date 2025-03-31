@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from accounts.models.users_models import User
 from taggit.managers import TaggableManager
 from django.urls import reverse
 
