@@ -1,0 +1,9 @@
+{% load static %}
+<div class="sidebar-box ftco-animate">
+    <h3 class="sidebar-heading">Categories</h3>
+    <ul class="categories">
+        {% for category in categories %}
+            <li><a href="{% url 'category-view' category=category.category__name %}">{{ category.category__name}}  <span>({{ category.post_count }})</span></a></li>
+        {% endfor %}
+    </ul>
+</div>
