@@ -13,7 +13,7 @@ python-decouple==3.8
 
 
 # refactoring 
-flake8-django==6.1.0
+flake8==6.1.0
 black==25.1.0
 
 

@@ -1,0 +1,119 @@
+
+
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block content %} 
+<div id="colorlib-main">
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-8 px-md-5 py-5">
+                    <div class="row pt-md-4">
+                        <h3 class="mb-3">{{ post.title }}</h3>
+                        <p>{{ post.content }}</p>
+                        <p>
+                            <img src="{{ post.image.url }}" alt="" class="img-fluid">
+                        </p>
+                        <div class="tag-widget post-tag-container mb-5 mt-5">
+                            <div class="tagcloud">
+                                {% for tag in all_tags %}
+                                <a href="{% url 'tag-view' tag=tag.name %}" class="tag-cloud-link">{{tag.name}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="pt-5 mt-5">
+                       
+                        {% if comments %}
+                        <h3 class="mb-5 font-weight-bold">
+                            {{ post.comment_count }} comment{{ post.comment_count|pluralize }}
+                        </h3>
+                    
+                            <ul class="comment-list">
+                                {% for comment in comments %}
+                                    <li class="comment">
+                                        <div class="comment-body">
+                                            {% if comment.author %}
+                                                <h3>{{ comment.author }}</h3>
+                                            {% else %}
+                                                <h3>Anonymous</h3>
+                                            {% endif %}
+                    
+                                            <div class="meta">{{ comment.created_date|date:'Y-m-d' }}</div>
+                                            <p>{{ comment.content }}</p>
+                    
+                                            <!-- Reply Button (Adds Parent ID to URL) -->
+                                            <p>
+                                                <a href="{% url 'single' post.pk %}?parent={{ comment.id }}"  class="btn btn-primary" >
+                                                    Reply
+                                                </a>
+                                            </p>
+                                        </div>
+                    
+                                        <!-- Display Replies -->
+                                        {% if comment.replies.all %}
+                                            <ul class="children">
+                                                {% for reply in comment.replies.all %}
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            {% if reply.author %}
+                                                                <h6>{{ reply.author }}</h6>
+                                                            {% else %}
+                                                                <h6>Anonymous</h6>
+                                                            {% endif %}
+                    
+                                                            <div class="meta">{{ reply.created_date|date:'Y-m-d' }}</div>
+                                                            <h6><p>{{ reply.content }}</p></h6>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <h3><strong class="text-secondary">No comments yet...</strong></h3>
+                        {% endif %}
+                    
+                        <!-- Comment Form (For New Comments & Replies) -->
+                        <div class="comment-form-wrap pt-5">
+                            <h3 class="mb-5">
+                                {% if request.GET.parent %}
+                                    Reply to Comment #{{ request.GET.parent }}
+                                    <a href="{% url 'single' post.pk %}" class="btn btn-danger btn-sm">Cancel</a>
+                                {% else %}
+                                    Leave a comment
+                                {% endif %}
+                            </h3>
+                    
+                            <form method="post" action="{% url 'add-comment' post.pk %}">
+                                {% csrf_token %}
+                                {{ comment_form.as_p }}
+                    
+                                <!-- Hidden input for parent comment -->
+                                <input type="hidden" name="parent" value="{{ request.GET.parent|default:'' }}">
+                    
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {% if request.GET.parent %}
+                                            Submit Reply
+                                        {% else %}
+                                            New Comment
+                                        {% endif %}
+                                    </button>
+                                    <a  href="/" class="btn btn-primary">Home</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+                {% include "sidebar/dynamic.html" %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}

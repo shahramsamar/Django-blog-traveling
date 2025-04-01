@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from accounts.models.users_models import User
 
 
-class Profiles(models.Model):
+class Profile(models.Model):
 
     """create profile for user"""
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -21,5 +21,5 @@ class Profiles(models.Model):
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """auto matic create or update userprofile""" 
     if created:
-        Profiles.objects.create(user=instance)
+        Profile.objects.create(user=instance)
        

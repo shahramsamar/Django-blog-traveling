@@ -20,9 +20,12 @@ from comment.forms.comment import CommentForm
 from django.db.models import Prefetch
 from django.contrib import messages
 from accounts.models.users_models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class BlogHomeView(ListView):
+
+
+class BlogHomeView(LoginRequiredMixin,ListView):
     """ """
 
     model = Post
@@ -31,7 +34,8 @@ class BlogHomeView(ListView):
     success_url = "/"
     paginate_by = 4
     ordering = ["-created_date"]
-
+    login_url = 'accounts/login'
+    
     def get_queryset(self):
         """
         get search item in title and content
@@ -94,7 +98,7 @@ class BlogHomeView(ListView):
         return context
 
 
-class MonthlyArchiveView(MonthArchiveView):
+class MonthlyArchiveView(LoginRequiredMixin,MonthArchiveView):
     model = Post
     allow_future = False
     context_object_name = "posts"
@@ -119,7 +123,7 @@ class MonthlyArchiveView(MonthArchiveView):
         return queryset
 
 
-class SingleBlogView(DetailView):
+class SingleBlogView(LoginRequiredMixin,DetailView):
     model = Post
     template_name = "single.html"
     context_object_name = "post"
@@ -195,7 +199,7 @@ class SingleBlogView(DetailView):
         return context
 
 
-class PostCommentView(CreateView):
+class PostCommentView(LoginRequiredMixin,CreateView):
     model = Comment
     form_class = CommentForm
     template_name = "single.html"
