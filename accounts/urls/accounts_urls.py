@@ -8,6 +8,7 @@ from accounts.views.accounts_views import RegisterView
 
 
 urlpatterns = [
+    path("api/v1/",include('accounts.api.v1.furls') ),
     path("login/", views.LoginView.as_view(), name="login"),
     path("logout/", views.LogoutView.as_view(), name="logout"),
     path("register/", RegisterView.as_view(), name='register'),
@@ -35,4 +36,5 @@ urlpatterns = [
     #     views.PasswordResetCompleteView.as_view(),
     #     name="password_reset_complete",
     # ),
+
 ]
