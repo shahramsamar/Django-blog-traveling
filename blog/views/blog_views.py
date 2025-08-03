@@ -21,7 +21,7 @@ from django.db.models import Prefetch
 from django.contrib import messages
 from accounts.models.users_models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from accounts.models.profiles_models import Profile
 
 
 
@@ -35,7 +35,6 @@ class BlogHomeView(LoginRequiredMixin,ListView):
     paginate_by = 4
     ordering = ["-created_date"]
     login_url = 'accounts/login'
-    
     def get_queryset(self):
         """
         get search item in title and content
@@ -95,7 +94,13 @@ class BlogHomeView(LoginRequiredMixin,ListView):
             .annotate(count=Count("id"))
             .order_by("date")
         )
+        profile = Profile.objects.get(user=self.request.user)
+        context = {
+        'first_name': profile.first_name,
+        'last_name': profile.last_name,
+        }
         return context
+
 
 
 class MonthlyArchiveView(LoginRequiredMixin,MonthArchiveView):
