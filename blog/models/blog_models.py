@@ -16,13 +16,12 @@ class Category(models.Model):
 
 class Post(models.Model):
     """ """
-
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="imgage/post", default="post/post-images.png")
-    category = models.ManyToManyField(Category, blank=True, related_name="posts")
-    tags = TaggableManager(blank=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     content = models.TextField()
+    category = models.ManyToManyField(Category, blank=True, related_name="posts")
+    tags = TaggableManager(blank=True)
     views = models.IntegerField(default=False)
     is_published = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
