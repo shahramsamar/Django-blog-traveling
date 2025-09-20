@@ -1,0 +1,12 @@
+
+services:
+  backend:
+    build: .
+    container_name: Cbv
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    environment:
+      SECRET_KEY: django-insecure-$9ewml@seaqhl^x+z$qzm3q26pc$i@x+$3df6x6om!8fy+w20%

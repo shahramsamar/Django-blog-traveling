@@ -16,7 +16,8 @@ class Profile(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.user.email
+        return f"{self.first_name} {self.last_name} " 
+    
 @receiver(post_save,sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     """auto matic create or update userprofile""" 

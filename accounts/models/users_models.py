@@ -4,7 +4,6 @@ from django.contrib.auth.models import(
     AbstractBaseUser,
     PermissionsMixin,
 )
-
 class UserManager(BaseUserManager):
     """custom user manager"""
     
@@ -49,3 +48,5 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     def __str__(self):
         return self.email
+    
+

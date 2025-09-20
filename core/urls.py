@@ -15,18 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Blog API",
-        default_version="v1",
-        description="blog api",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="shahramsamar2010@gmail.com"),
-        license=openapi.License(name="MIT License"),
-    ),
-    public=True,
-    # permission_classes=(permissions.AllowAny,),
-)
+# schema_view = get_schema_view(
+#     openapi.Info(
+#         title="Blog API",
+#         default_version="v1",
+#         description="blog api",
+#         terms_of_service="https://www.google.com/policies/terms/",
+#         contact=openapi.Contact(email="shahramsamar2010@gmail.com"),
+#         license=openapi.License(name="MIT License"),
+#     ),
+#     public=True,
+#     # permission_classes=(permissions.AllowAny,),
+# )
 
 
 

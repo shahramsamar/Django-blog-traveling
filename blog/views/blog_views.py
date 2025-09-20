@@ -94,11 +94,7 @@ class BlogHomeView(LoginRequiredMixin,ListView):
             .annotate(count=Count("id"))
             .order_by("date")
         )
-        profile = Profile.objects.get(user=self.request.user)
-        context = {
-        'first_name': profile.first_name,
-        'last_name': profile.last_name,
-        }
+        context['profile'] = Profile.objects.get(user=self.request.user)
         return context
 
 
@@ -201,6 +197,8 @@ class SingleBlogView(LoginRequiredMixin,DetailView):
         ).prefetch_related(
             Prefetch("replies", queryset=Comment.objects.filter(approved=True))
         )
+        context['profile'] = Profile.objects.get(user=self.request.user)
+
         return context
 
 
