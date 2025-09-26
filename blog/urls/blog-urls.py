@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from blog.views import blog_views
 
 
@@ -22,4 +22,6 @@ urlpatterns = [
         blog_views.PostCommentView.as_view(),
         name="add-comment",
     ),
+    
+    path('api/v1/',include('blog.api.v1.urls')),
 ]
